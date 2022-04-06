@@ -39,4 +39,29 @@ router.post("/", async (req, res) => {
   }
 });
 
+//deletes a post
+router.delete("/:id", async (req, res) => {
+  try {
+    const removedPost = await Post.remove({ _id: req.params.id });
+    res.json(removedPost);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+//update a post
+router.patch("/:id", async (req, res) => {
+  try {
+    const updatedPost = await Post.updateOne(
+      { _id: req.params.id },
+      { $set: { title: req.body.title, description: req.body.description } }
+    );
+    res.json(updatedPost);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
